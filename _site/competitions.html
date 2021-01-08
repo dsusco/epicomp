@@ -1,0 +1,5 @@
+---
+title: Competitions
+---
+{% for year in site.data.years %}
+<a href="{{ year | append: '/' | relative_url }}">{{year}}</a>{% endfor %}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>{% for stylesheet in site.stylesheets %}
+    <link rel="stylesheet" href="{{ stylesheet }}" />{% endfor %}{% for stylesheet in page.stylesheets %}
+    <link rel="stylesheet" href="{{ stylesheet }}" />{% endfor %}
+
+    <meta charset="utf-8" />
+    <meta name="author" content="{% if page.author %}{{ page.author }}{% else %}{{ site.author }}{% endif %}" />
+    <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}" />
+    <meta name="robots" content="index,follow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />{% if page.style %}
+
+    <style>
+{{ page.style }}    </style>{% endif %}
+
+    <title>{% if page.title %}{{ page.title }} – {{ site.title }}{% else %}{{ site.title }} – {{ site.tagline }}{% endif %}</title>
+  </head>
+
+  <body class="no-js {{ page.layout }}-layout">
+    <div id="page">
+      <header id="header">
+        <a href="{{ '/' | relative_url }}">
+          {{ site.title }}
+          <small>{{ site.tagline }}</small>
+        </a>
+      </header>
+
+      <nav id="nav">
+        <ul>
+          <li><a href="{{ '/about.html' | relative_url }}">About</a></li>
+          <li><a href="{{ '/competitions.html' | relative_url }}">Competitions</a></li>
+          <li><a href="{{ '/rules.html' | relative_url }}">Rules</a></li>
+        </ul>
+      </nav>
+
+      <main id="main">
+{{ content }}
+      </main>
+
+      <footer id="footer">
+        <p>All images are copyright to their respective owners and are used here with their permission.</p>
+      </footer>
+    </div>
+{% for script in site.scripts %}
+    <script src="{{ script }}"></script>{% endfor %}{% for script in page.scripts %}
+    <script src="{{ script }}"></script>{% endfor %}{% if page.script %}
+
+    <script>
+{{ page.script }}    </script>{% endif %}
+  </body>
+</html>
