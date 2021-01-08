@@ -1,0 +1,5 @@
+---
+layout: default
+---
+{% for category in site.data.categories %}
+<a href="{{ page.year | append: '/' | append: category[0] | append: '/' | relative_url }}">{{page.year}} {{category[1].title}}</a>{% endfor %}
