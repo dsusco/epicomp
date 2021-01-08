@@ -82,7 +82,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  cloudinary
+  cloudinary (~> 1.18.1)
   jekyll (~> 4.2.0)
 
 BUNDLED WITH

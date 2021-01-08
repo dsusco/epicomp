@@ -1,5 +1,14 @@
 ---
 layout: default
 ---
-{% for category in site.data.categories %}
-<a href="{{ page.year | append: '/' | append: category[0] | append: '/' | relative_url }}">{{page.year}} {{category[1].title}}</a>{% endfor %}
+{% for category in page.categories %}
+<a href="{{ page.year | append: '/' | append: category | append: '/' | relative_url }}">{% assign images = site.data.images | where_exp: 'image', 'image.tags contains page.year' | where_exp: 'image', 'image.tags contains category' %}
+  <figure>{% assign random_image = images | sample %}
+    <img height="180" alt="{{ random_image.context.custom.alt }}" src="{{ random_image.secure_url }}" title="{{ random_image.context.custom.alt }}" />
+    <figcaption>
+      EpiComp {{ page.year }} {{ site.data.categories[category].title }}
+      <small>{{ images | size }} Entries</small>
+    </figcaption>
+  </figure>
+</a>
+{% endfor %}
