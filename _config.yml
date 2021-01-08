@@ -1,0 +1,25 @@
+scripts:
+stylesheets:
+author: Tactical Command
+description: Entries through the years for Tactical Command's EpiComp, a 6mm sci-fi miniature painting competition.
+tagline: The 6mm sci-fi painting competition.
+title: EpiComp
+
+# Where things are
+source: ./_site
+destination: ./public_html
+
+# Serving
+baseurl: /epicomp
+# undocumented, but this is prepended with the absolute_url filter when the site is built (but not served)
+url: https://tacticalwargames.net
+
+# Outputting
+timezone: America/New_York
+
+# Outputting
+defaults:
+  -
+    values:
+      layout: default
+
