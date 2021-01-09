@@ -1,0 +1,16 @@
+---
+---
+{% assign year = '2020' %}
+{% for category in site.data.pages[year]['index.html'].categories %}
+<div>{% assign images = site.data.images | where_exp: 'image', 'image.tags contains year and image.tags contains category' | sort: 'alt' | reverse %}
+  <h2>{{ site.data.categories[category].title }}</h2>
+
+  <textarea>{% for image in images %}
+{{ image.context.custom.alt }}{% endfor %}</textarea>
+
+  <textarea>{% for image in images %}
+[url={{ image.secure_url }}][img]{{ image.secure_url | cloudinary_transformation: 'w_640,h_480,c_fit'  }}[/img]
+{{ image.context.custom.alt }}[/url]
+{% endfor %}</textarea>
+</div>
+{% endfor %}
