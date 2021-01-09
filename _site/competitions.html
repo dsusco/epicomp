@@ -1,7 +1,7 @@
 ---
 title: Competitions
 ---
-{% for year in site.data.years %}
+{% assign years = site.data.years | sort | reverse %}{% for year in years %}
 <a href="{{ year | append: '/' | relative_url }}">
   <figure>{% assign random_image = site.data.images | where_exp: 'image', 'image.tags contains year' | sample %}
     <img alt="{{ random_image.context.custom.alt }}" src="{{ random_image.secure_url | cloudinary_transformation: 'c_fill,h_240,w_240' }}" title="{{ random_image.context.custom.alt }}" />
