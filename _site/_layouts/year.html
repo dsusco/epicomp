@@ -4,7 +4,7 @@ layout: default
 {% for category in page.categories %}
 <a href="{{ page.year | append: '/' | append: category | append: '/' | relative_url }}">{% assign images = site.data.images | where_exp: 'image', 'image.tags contains page.year' | where_exp: 'image', 'image.tags contains category' %}
   <figure>{% assign random_image = images | sample %}
-    <img height="180" alt="{{ random_image.context.custom.alt }}" src="{{ random_image.secure_url }}" title="{{ random_image.context.custom.alt }}" />
+    <img alt="{{ random_image.context.custom.alt }}" src="{{ random_image.secure_url | cloudinary_transformation: 'c_fill,h_240,w_240' }}" title="{{ random_image.context.custom.alt }}" />
     <figcaption>
       EpiComp {{ page.year }} {{ site.data.categories[category].title }}
       <small>{{ images | size }} Entries</small>

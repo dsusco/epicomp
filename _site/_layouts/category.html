@@ -4,7 +4,7 @@ layout: default
 {% assign images = site.data.images | where_exp: 'image', 'image.tags contains page.year' | where_exp: 'image', 'image.tags contains page.category' %}{% for image in images %}
 <a href="{{ image.secure_url }}">
   <figure>
-    <img height="180" alt="{{ image.context.custom.alt }}" src="{{ image.secure_url }}" title="{{ image.context.custom.alt }}" />
+    <img alt="{{ image.context.custom.alt }}" src="{{ image.secure_url | cloudinary_transformation: 'h_240'  }}" title="{{ image.context.custom.alt }}" />
     <figcaption>{{ image.context.custom.alt }}</figcaption>
   </figure>
 </a>

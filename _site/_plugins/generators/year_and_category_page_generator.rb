@@ -13,7 +13,7 @@ module Jekyll
 
           # add the page to the site as well as the pages Hash
           site.pages << yearPage
-          site.data['pages'].dig_assignment(*(yearPage.url + yearPage.name).split('/'), yearPage)
+          site.data['pages'].dig_assignment(*(yearPage.url + yearPage.name).split('/')[1..], yearPage)
 
           site.data['categories'].each_pair do |category_slug, category|
             if site.data['images'].any? { |image| image['tags'].include?(year) && image['tags'].include?(category_slug) }
@@ -28,7 +28,7 @@ module Jekyll
 
               # add the page to the site as well as the pages Hash
               site.pages << categoryPage
-              site.data['pages'].dig_assignment(*(categoryPage.url + categoryPage.name).split('/'), categoryPage)
+              site.data['pages'].dig_assignment(*(categoryPage.url + categoryPage.name).split('/')[1..], categoryPage)
             end
           end
         end

@@ -4,7 +4,7 @@ Jekyll::Hooks.register :site, :post_read do |site|
     site.pages.reduce({}) do |hash, page|
       url = page.url
       url += page.name if page.index?
-      hash.dig_assignment(*url.split('/'), page)
+      hash.dig_assignment(*url.split('/')[1..], page)
       hash
     end
 end

@@ -26,6 +26,7 @@ module Jekyll
         break if next_cursor.nil?
       end
 
+      # reduce the images array to an array of their tags, and keep the years
       site.data['years'] =
         site.data['images']
           .reduce([]) { |years, image| years | image['tags'] }
