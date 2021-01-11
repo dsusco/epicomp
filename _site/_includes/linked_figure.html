@@ -1,0 +1,6 @@
+<a href="{{ include.url | default: image.secure_url }}"{% if include.img_template %} data-img_template="{{ include.img_template }}"{% endif %}{% if include.year %} data-year="{{ include.year }}"{% endif %}{% if include.category %} data-category="{{ include.category }}" data-category_title="{{ site.data.categories[include.category].title }}"{% endif %}>
+  <figure>
+    {% include img.html image=include.image alt=include.alt transformation=include.transformation %}
+    <figcaption>{{ include.figcaption | default: include.image.context.custom.alt }}</figcaption>
+  </figure>
+</a>

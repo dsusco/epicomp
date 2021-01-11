@@ -1,0 +1,28 @@
+---
+---
+a[data-img_template] {
+  display: inline-block;
+
+  figure {
+    width: 240px;
+  }
+}
+
+figure {
+  height: 240px;
+  position: relative;
+  margin: 0;
+
+  img {
+    position: absolute;
+  }
+
+  figcaption {
+    position: absolute;
+    bottom: 0;
+
+    small {
+      display: block;
+    }
+  }
+}
