@@ -1,14 +1,9 @@
 ---
 layout: default
 ---
-{% for category in page.categories %}
-<a href="{{ page.year | append: '/' | append: category | append: '/' | relative_url }}">{% assign images = site.data.images | where_exp: 'image', 'image.tags contains page.year and image.tags contains category' %}
-  <figure>{% assign random_image = images | sample %}
-    <img alt="{{ random_image.context.custom.alt }}" src="{{ random_image.secure_url | cloudinary_transformation: 'c_fill,h_240,w_240' }}" title="{{ random_image.context.custom.alt }}" />
-    <figcaption>
-      EpiComp {{ page.year }} {{ site.data.categories[category].title }}
-      <small>{{ images | size }} Entries</small>
-    </figcaption>
-  </figure>
-</a>
-{% endfor %}
+{% for category in page.categories %}{% assign url = page.year | append: '/' | append: category | append: '/' | relative_url %}{% assign images = site.data.images | where_exp: 'image', 'image.tags contains page.year and image.tags contains category' %}{% assign image = images | sample %}{% capture alt %}EpiComp {{ page.year }} {{ site.data.categories[category].title }} (Pictured: {{ image.context.custom.alt }}){% endcapture %}{% capture figcaption %}EpiComp {{ page.year }} {{ site.data.categories[category].title }} <small>{{ images | size }} Entries</small>{% endcapture %}
+{% include linked_figure.html url=url img_template="#year_img_template" year=page.year category=category image=image alt=alt transformation='c_fill,h_240,w_240' figcaption=figcaption %}{% endfor %}
+
+<script id="year_img_template" type="text/template">
+  {% include img.html image=page.template_image transformation='c_fill,h_240,w_240' %}
+</script>

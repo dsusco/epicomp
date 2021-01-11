@@ -6,10 +6,21 @@ module Jekyll
         if site.data['images'].any? { |image| image['tags'].include?(year) }
           yearPage = PageWithoutAFile.new(site, site.source, year, 'index.html')
 
-          yearPage.data['layout'] = 'year'
-          yearPage.data['title'] = "#{year}"
-          yearPage.data['year'] = year
-          yearPage.data['categories'] = []
+          yearPage.data.merge!({
+            'layout' => 'year',
+            'title' => "#{year}",
+            'year' => year,
+            'categories' => [],
+            'template_image' => {
+              'context' => {
+                'custom' => {
+                  'alt' => 'EpiComp <%= year %> <%= category_title %> (Pictured: <%= image.context.custom.alt %>)'
+                }
+              },
+              'public_id' => '<%= image.public_id %>',
+              'secure_url' => "<%= image.secure_url.replace(/(\\/upload\\/)/, '$1' + transformation + '/') %>"
+            }
+          })
 
           # add the page to the site as well as the pages Hash
           site.pages << yearPage
@@ -21,10 +32,12 @@ module Jekyll
 
               categoryPage = PageWithoutAFile.new(site, site.source, File.join(year, category_slug), 'index.html')
 
-              categoryPage.data['layout'] = 'category'
-              categoryPage.data['title'] = "#{year} #{category['title']}"
-              categoryPage.data['year'] = year
-              categoryPage.data['category'] = category_slug
+              categoryPage.data.merge!({
+                'layout' => 'category',
+                'title' => "#{year} #{category['title']}",
+                'year' => year,
+                'category' => category_slug
+              })
 
               # add the page to the site as well as the pages Hash
               site.pages << categoryPage
