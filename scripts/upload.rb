@@ -17,7 +17,7 @@ for image in images do
   alt = "#{caption} - #{artist}"
 
   puts Cloudinary::Uploader.upload(image, {
-    public_id: public_id,
+    public_id: "#{year}/#{category}/#{alt}",
     tags: [year, category],
     context: {
       alt: alt,
