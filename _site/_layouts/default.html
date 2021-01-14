@@ -13,7 +13,7 @@
     <style>
 {{ page.style }}    </style>{% endif %}
 
-    <title>{% if page.title %}{{ page.title }} – {{ site.title }}{% else %}{{ site.title }} – {{ site.tagline }}{% endif %}</title>
+    <title>{{ page.title }} – {% if page.url == '/' %}{{ site.tagline }}{% else %}{{ site.title }}{% endif %}</title>
   </head>
 
   <body class="no-js {{ page.layout }}-layout">
@@ -30,7 +30,7 @@
       <nav id="nav">
         <ul>
           <li><a href="{{ '/about.html' | relative_url }}">About</a></li>
-          <li><a href="{{ '/competitions.html' | relative_url }}">Competitions</a></li>
+          <li><a href="{{ '/gallery.html' | relative_url }}">Gallery</a></li>
           <li><a href="{{ '/rules.html' | relative_url }}">Rules</a></li>
         </ul>
       </nav>

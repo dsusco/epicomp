@@ -1,5 +1,44 @@
 ---
 ---
+.modal-overlay {
+  position: fixed;
+
+  &::after {
+    background: rgba(0, 0, 0, 0.5);
+    content: '';
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+}
+
+.modal {
+  background: white;
+  position: fixed;
+  top: 5%;
+  right: 5%;
+  bottom: 5%;
+  left: 5%;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.modal-body {
+  position: absolute;
+  padding: 10px;
+  height: calc(100% - 100px);
+  width: calc(100% - 20px);
+
+  img {
+    display: block;
+    margin: 0 auto;
+    max-height: 100%;
+    max-width: 100%;
+  }
+}
+
 a[data-img_template] {
   display: inline-block;
 
