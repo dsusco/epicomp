@@ -6,15 +6,17 @@ $(function () {
 
   $.getJSON('/epicomp/assets/json/images.json', function (data) {
     images = data;
-    images.pop(); // remove sample.jpg
+
     images = images.reduce(function (images, image) {
       images[image.public_id] = image;
 
       return images;
     }, {})
+
+    delete images.sample;
   });
 
-  // replace images with another from the same year or year/category
+  // gallery and year image card
   $('a[data-img_template]').each(function () {
     var
       $a = $(this),
@@ -50,6 +52,7 @@ $(function () {
     }, Math.floor(Math.random() * 6) * 1000 + 5000); // replace every 5 to 10 seconds
   });
 
+  // category modal
   $modal
     .modal({
       control: '.category-linked-figure',
@@ -61,7 +64,7 @@ $(function () {
         $a = $(openEvent.delegateTarget),
         $prev = $a.prev(),
         $next = $a.next(),
-        $modalBody = $(modalBodyTemplate({ image: images[$a.data('public_id')] }));
+        $modalBody = $(modalBodyTemplate({ image: images[$a.find('img').data('public_id')] }));
 
       if ($prev.length < 1) {
         $prev = $a.siblings().last();
