@@ -36,7 +36,12 @@
       </nav>
 
       <main id="main">
-        <h1>{{ page.heading | default: page.title }}</h1>
+        <h1>{{ page.heading | default: page.title }}</h1>{% if page.url != '/' %}
+
+        <ul>{% assign breadcrumbs = page.url | breadcrumb_array %}{% for breadcrumb in breadcrumbs %}
+          <li><a href="{{ breadcrumb.url | relative_url }}">{{ breadcrumb.breadcrumb | default: breadcrumb.title }}</a></li>{% endfor %}
+        </ul>{% endif %}
+
 {{ content }}
       </main>
 

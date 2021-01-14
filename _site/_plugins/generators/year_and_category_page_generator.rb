@@ -9,6 +9,8 @@ module Jekyll
           yearPage.data.merge!({
             'layout' => 'year',
             'title' => "#{year}",
+            'heading' => "EpiComp #{year}",
+            'breadcrumb' => year,
             'year' => year,
             'categories' => [],
             'template_image' => {
@@ -34,7 +36,9 @@ module Jekyll
 
               categoryPage.data.merge!({
                 'layout' => 'category',
+                'breadcrumb' => category['title'],
                 'title' => "#{year} #{category['title']}",
+                'heading' => "EpiComp #{year} #{category['title']}",
                 'year' => year,
                 'category' => category_slug
               })
