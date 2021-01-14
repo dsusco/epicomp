@@ -4,7 +4,7 @@ module Jekyll
     def generate(site)
       site.data['years'].each do |year|
         if site.data['images'].any? { |image| image['tags'].include?(year) }
-          yearPage = PageWithoutAFile.new(site, site.source, year, 'index.html')
+          yearPage = PageWithoutAFile.new(site, site.source, File.join('gallery', year), 'index.html')
 
           yearPage.data.merge!({
             'layout' => 'year',
@@ -32,7 +32,7 @@ module Jekyll
             if site.data['images'].any? { |image| image['tags'].include?(year) && image['tags'].include?(category_slug) }
               yearPage.data['categories'] << category_slug
 
-              categoryPage = PageWithoutAFile.new(site, site.source, File.join(year, category_slug), 'index.html')
+              categoryPage = PageWithoutAFile.new(site, site.source, File.join('gallery', year, category_slug), 'index.html')
 
               categoryPage.data.merge!({
                 'layout' => 'category',

@@ -1,8 +1,8 @@
 $(function () {
   var
     $modal = $('#modal'),
-    modalBodyTemplate = _.template($($modal.data('modal_body_template')).text().trim()),
-    images = [];
+    images = [],
+    modalBodyTemplate = _.template($($modal.data('modal_body_template')).text().trim());
 
   $.getJSON('/epicomp/assets/json/images.json', function (data) {
     images = data;
@@ -17,39 +17,49 @@ $(function () {
   });
 
   // gallery and year image card
-  $('a[data-img_template]').each(function () {
+  $('a[data-img-template]').each(function () {
     var
       $a = $(this),
-      img_template = _.template($($a.data('img_template')).text().trim()),
+      options = Object.assign({
+        delay: Math.floor(Math.random() * 6) * 1000 + 5000, // 5-10 seconds
+        entranceAnimation: 'animate__delay-1s animate__slow animate__fadeIn',
+        entranceCss: { opacity: '' },
+        exitAnimation: 'animate__delay-1s animate__slow animate__fadeOut',
+        exitCss: { opacity: 0 },
+        exitTimeout: 2500, // slightly longer that animate__slow
+        imgTemplate: ''
+      }, $a.data()),
+      imgTemplate = _.template($(options.imgTemplate).text().trim()),
       tags = _.compact([this.getAttribute('data-year'), this.getAttribute('data-category')]),
       transformation = $a.find('img').data('transformation');
 
     setInterval(function () {
       var
+        $exitingImg = $a.find('img'),
         image = _.sample(_.filter(Object.values(images), function (image) { // choose a different random image from the same year/category
-          return $a.find('img').data('public_id') !== image.public_id && _.difference(tags, image.tags).length === 0 ;
+          return $exitingImg.data('public_id') !== image.public_id && _.difference(tags, image.tags).length === 0 ;
         })),
-        $img = $(img_template(_.assign({ transformation: transformation }, $a.data(), { image: image })));
+        $img = $(imgTemplate(Object.assign({ transformation: transformation }, options, { image: image })));
 
       if (!$a.is(':focus') && !$a.is(':hover')) {
-        $a.find('img')
-          .animateCss('animate__slow animate__fadeOut')
+        $exitingImg
+          .animateCss(options.exitAnimation)
           .after(
             $img
-              .css('opacity', 0) // so fadeIn works correctly
-              .animateCss('animate__slow animate__fadeIn')
+              .css(options.exitCss)
+              .animateCss(options.entranceAnimation)
               .each(function () {
                 // animationend event buggy when window was minimized, using this instead
                 setTimeout(function () {
                   $img
-                    .css('opacity', '')
+                    .css(options.entranceCss)
                     .prevUntil()
                       .remove();
-                }, 2000); // change timeout to match animateCSS animate__* speed
+                }, options.exitTimeout);
               })
           );
         }
-    }, Math.floor(Math.random() * 6) * 1000 + 5000); // replace every 5 to 10 seconds
+    }, options.delay); // replace every 5 to 10 seconds
   });
 
   // category modal

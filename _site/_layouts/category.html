@@ -2,7 +2,13 @@
 layout: default
 ---
 <div>{% assign images = site.data.images | where_exp: 'image', 'image.tags contains page.year and image.tags contains page.category' | sort: 'public_id' %}{% for image in images %}
-{% include linked_figure.html class='category-linked-figure' image=image transformation='h_240' %}{% endfor %}</div>
+  <a class="category-linked-figure" href="{{ image.secure_url }}">
+    <figure>
+      {% include img.html image=image transformation='h_240' %}
+      <figcaption>{{ image.context.custom.alt }}</figcaption>
+    </figure>
+  </a>
+{% endfor %}</div>
 
 <div id="modal" hidden data-modal_body_template="#modal_body_template">
   <header class="modal-header">

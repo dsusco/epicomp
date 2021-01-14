@@ -30,7 +30,7 @@
       <nav id="nav">
         <ul>
           <li><a href="{{ 'about.html' | relative_url }}">About</a></li>
-          <li><a href="{{ 'gallery.html' | relative_url }}">Gallery</a></li>
+          <li><a href="{{ 'gallery/' | relative_url }}">Gallery</a></li>
           <li><a href="{{ 'rules.html' | relative_url }}">Rules</a></li>
         </ul>
       </nav>
@@ -39,7 +39,7 @@
         <h1>{{ page.heading | default: page.title }}</h1>{% if page.url != '/' %}
 
         <ul>{% assign breadcrumbs = page.url | breadcrumb_array %}{% for breadcrumb in breadcrumbs %}
-          <li><a href="{{ breadcrumb.url | relative_url }}">{{ breadcrumb.breadcrumb | default: breadcrumb.title }}</a></li>{% endfor %}
+          <li><a{% if forloop.last != true %} href="{{ breadcrumb.url | relative_url }}"{% endif %}>{{ breadcrumb.breadcrumb | default: breadcrumb.title }}</a></li>{% endfor %}
         </ul>{% endif %}
 
 {{ content }}

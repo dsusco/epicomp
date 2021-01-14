@@ -1,5 +1,18 @@
 ---
 title: EpiComp
-breadcrumb: Home
+template_image:
+  context:
+    custom:
+      alt: <%= image.context.custom.alt %>
+  public_id: <%= image.public_id %>
+  secure_url: <%= image.secure_url.replace(/(\/upload\/)/, '$1' + transformation + '/') %>
 ---
-index
+{% assign image = site.data.images | sample %}<a href="" data-delay="8000" data-img-template="#home_img_template">
+  <figure>
+    {% include img.html image=image transformation='c_fill,h_450,w_800' %}
+  </figure>
+</a>
+
+<script id="home_img_template" type="text/template">
+  {% include img.html image=page.template_image %}
+</script>
