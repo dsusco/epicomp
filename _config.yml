@@ -8,8 +8,6 @@ scripts:
   - /epicomp/assets/js/plugins/jquery.modal.js
   - /epicomp/assets/js/epicomp.js
 stylesheets:
-  - https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css
-  - https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css
   - /epicomp/assets/css/epicomp.css
 author: Tactical Command
 description: Entries through the years for Tactical Command's EpiComp, a 6mm sci-fi miniature painting competition.
@@ -17,8 +15,13 @@ tagline: The 6mm sci-fi painting competition.
 title: EpiComp
 
 # Where things are
-source: ./_site
-destination: ./public_html
+source: _site
+destination: public_html
+sass:
+  sass_dir: _scss
+  style: compressed
+  load_paths:
+    - node_modules
 
 # Serving
 baseurl: /epicomp
