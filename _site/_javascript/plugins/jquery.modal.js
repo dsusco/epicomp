@@ -1,5 +1,5 @@
 jQuery.fn.extend({
-  modal: function (modalOptions = {}) {
+  modal: function (modalOptions) {
     return this.each(function () {
       var
         $modal = $(this).attr('aria-modal', true),

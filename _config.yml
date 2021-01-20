@@ -1,11 +1,4 @@
 scripts:
-  - https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js
-  - https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js
-  - /epicomp/assets/js/plugins/jquery.allFocusable.js
-  - /epicomp/assets/js/plugins/jquery.animateCss.js
-  - /epicomp/assets/js/plugins/jquery.focusable.js
-  - /epicomp/assets/js/plugins/jquery.hasEventHandler.js
-  - /epicomp/assets/js/plugins/jquery.modal.js
   - /epicomp/assets/js/epicomp.js
 stylesheets:
   - /epicomp/assets/css/epicomp.css
@@ -20,6 +13,9 @@ destination: public_html
 sass:
   sass_dir: _scss
   style: compressed
+  load_paths:
+    - node_modules
+javascript:
   load_paths:
     - node_modules
 

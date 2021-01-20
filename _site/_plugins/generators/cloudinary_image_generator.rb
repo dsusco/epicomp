@@ -1,5 +1,5 @@
 module Jekyll
-  class CloudinaryImageGenerator < Jekyll::Generator
+  class CloudinaryImageGenerator < Generator
     require 'cloudinary'
     require 'yaml'
 

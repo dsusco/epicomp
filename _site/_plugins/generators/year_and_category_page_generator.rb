@@ -1,6 +1,6 @@
 module Jekyll
   # creates index pages for years and categories
-  class YearAndCategoryPageGenerator < Jekyll::Generator
+  class YearAndCategoryPageGenerator < Generator
     def generate(site)
       site.data['years'].each do |year|
         if site.data['images'].any? { |image| image['tags'].include?(year) }

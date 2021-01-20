@@ -1,3 +1,7 @@
+---
+---
+//= import baseline.js
+
 $(function () {
   var
     $modal = $('#modal'),
