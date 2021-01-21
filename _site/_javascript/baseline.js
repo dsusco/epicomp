@@ -1,2 +1,2 @@
-//= import vendors.js
-//= import plugins.js
+//= import vendors
+//= import_tree plugins/

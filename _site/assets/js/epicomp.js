@@ -1,6 +1,6 @@
 ---
 ---
-//= import baseline.js
+//= import baseline
 
 $(function () {
   var
@@ -25,7 +25,7 @@ $(function () {
     var
       $a = $(this),
       options = Object.assign({
-        delay: Math.floor(Math.random() * 6) * 1000 + 5000, // 5-10 seconds
+        delay: Math.floor(Math.random() * 6) * 1000 + 5000, // replace every 5 to 10 seconds
         entranceAnimation: 'animate__delay-1s animate__slow animate__fadeIn',
         entranceCss: { opacity: '' },
         exitAnimation: 'animate__delay-1s animate__slow animate__fadeOut',
@@ -63,7 +63,7 @@ $(function () {
               })
           );
         }
-    }, options.delay); // replace every 5 to 10 seconds
+    }, options.delay);
   });
 
   // category modal

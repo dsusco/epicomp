@@ -3,6 +3,8 @@ require 'uglifier'
 module Jekyll
   module Converters
     class JavaScriptConverter < Converter
+      DIRECTIVES = %w(import import_directory import_tree)
+
       safe true
       priority :low
 
@@ -23,23 +25,23 @@ module Jekyll
       end
 
       def associate_page(page)
-        if @javascript_page
+        if @page
           Jekyll.logger.debug 'JavaScript Converter:',
-                              "javascript_page re-assigned: #{@javascript_page.name} to #{page.name}"
+                              "javascript_page re-assigned: #{@page.name} to #{page.name}"
           dissociate_page(page)
         else
-          @javascript_page = page
-          @site = @javascript_page.site rescue Jekyll.sites.last
+          @page = page
+          @site = @page.site rescue Jekyll.sites.last
         end
       end
 
       def dissociate_page(page)
-        unless page.equal?(@javascript_page)
+        unless page.equal?(@page)
           Jekyll.logger.debug 'JavaScript Converter:',
                               "dissociating a page that was never associated #{page.name}"
         end
 
-        @javascript_page = nil
+        @page = nil
         @site = nil
       end
 
@@ -63,9 +65,9 @@ module Jekyll
         @javascript_dir ||= javascript_config['javascript_dir'].to_s.empty? ? '_javascript' : javascript_config['javascript_dir']
       end
 
-      def javascript_load_paths
-        paths = javascript_config['load_paths'].map { |load_path| File.expand_path(load_path) } rescue []
-        paths = [Jekyll.sanitized_path(@site.source, javascript_dir)] + paths
+      def load_paths
+        paths = [Jekyll.sanitized_path(@site.source, javascript_dir)]
+        paths += javascript_config['load_paths'].map { |load_path| File.expand_path(load_path) } rescue []
 
         if safe?
           paths.map! { |path| Jekyll.sanitized_path(@site.source, path) }
@@ -89,7 +91,7 @@ module Jekyll
       end
 
       def convert(content)
-        @javascript_page.data['layout'] = 'none'
+        @page.data['layout'] = 'none'
 
         config = Jekyll::Utils.symbolize_hash_keys(
           Jekyll::Utils.deep_merge_hashes(
@@ -105,18 +107,32 @@ module Jekyll
 
       def insert_imports(content)
         content.enum_for(:scan, /^\W*=\s*(\w+)\W+([\w\/\\\-\.]+)\W*$/).map {
-          { match: Regexp.last_match, insert_at: Regexp.last_match.end(0) }
+          { directive: Regexp.last_match[1],
+            path: Regexp.last_match[2],
+            insert_at: Regexp.last_match.end(0) }
         }.sort { |a, b|
-          # start inserting at the end of the file so the insert_at's remain accurate as the content length changes
+          # start inserting at the end of the file so the insert_at's remain accurate as the content's length changes
           b[:insert_at] <=> a[:insert_at]
-        }.each { |directive|
-          import_content = javascript_load_paths.reduce([]) { |files, load_path|
-            files + Dir.glob(File.join(load_path, '**', directive[:match][2]))
-          }.uniq.reduce('') { |import_content, file|
-            import_content += File.read(file)
-          }
+        }.each { |match|
+          if DIRECTIVES.include?(match[:directive])
+            import_content = load_paths.reduce([]) { |files, load_path|
+              glob = case match[:directive]
+              when 'import'
+                match[:path] += '.js' unless match[:path].end_with?('.js')
+                File.join(load_path, '**', match[:path])
+              when 'import_directory'
+                File.join(load_path, '**', match[:path], '*.js')
+              when 'import_tree'
+                File.join(load_path, '**', match[:path], '**', '*.js')
+              end
 
-          content.insert(directive[:insert_at], "\n#{insert_imports(import_content)}")
+              files + Dir.glob(glob)
+            }.uniq.reduce('') { |import_content, file|
+              import_content += File.read(file)
+            }
+
+            content.insert(match[:insert_at], "\n#{insert_imports(import_content)}")
+          end
         }
 
         content

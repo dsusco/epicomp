@@ -1,2 +1,2 @@
-//= import lodash/lodash.js
-//= import jquery/dist/jquery.js
+//= import lodash/lodash
+//= import jquery/dist/jquery
