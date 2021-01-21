@@ -13,8 +13,6 @@ destination: public_html
 sass:
   sass_dir: _scss
   style: compressed
-  load_paths:
-    - node_modules
 javascript:
   load_paths:
     - node_modules
@@ -32,3 +30,8 @@ defaults:
   -
     values:
       layout: default
+  -
+    scope:
+      path: assets
+    values:
+      layout: none

@@ -8,41 +8,9 @@ module Jekyll
       safe true
       priority :low
 
-      Jekyll::Hooks.register :pages, :pre_render do |page|
-        next unless page.is_a?(Jekyll::Page)
-
-        page.converters.each do |converter|
-          converter.associate_page(page) if converter.is_a?(Jekyll::Converters::JavaScriptConverter)
-        end
-      end
-
-      Jekyll::Hooks.register :pages, :post_render do |page|
-        next unless page.is_a?(Jekyll::Page)
-
-        page.converters.each do |converter|
-          converter.dissociate_page(page) if converter.is_a?(Jekyll::Converters::JavaScriptConverter)
-        end
-      end
-
-      def associate_page(page)
-        if @page
-          Jekyll.logger.debug 'JavaScript Converter:',
-                              "javascript_page re-assigned: #{@page.name} to #{page.name}"
-          dissociate_page(page)
-        else
-          @page = page
-          @site = @page.site rescue Jekyll.sites.last
-        end
-      end
-
-      def dissociate_page(page)
-        unless page.equal?(@page)
-          Jekyll.logger.debug 'JavaScript Converter:',
-                              "dissociating a page that was never associated #{page.name}"
-        end
-
-        @page = nil
-        @site = nil
+      def initialize(config = {})
+        @site = Jekyll.sites.last
+        super
       end
 
       def matches(ext)
@@ -62,37 +30,37 @@ module Jekyll
       end
 
       def javascript_dir
-        @javascript_dir ||= javascript_config['javascript_dir'].to_s.empty? ? '_javascript' : javascript_config['javascript_dir']
+        javascript_config['javascript_dir'].to_s.empty? ? '_javascript' : javascript_config['javascript_dir']
       end
 
       def load_paths
-        paths = [Jekyll.sanitized_path(@site.source, javascript_dir)]
-        paths += javascript_config['load_paths'].map { |load_path| File.expand_path(load_path) } rescue []
+        @load_paths ||= begin
+          paths = [Jekyll.sanitized_path(@site.source, javascript_dir)]
+          paths += javascript_config['load_paths'].map { |load_path| File.expand_path(load_path) } rescue []
 
-        if safe?
-          paths.map! { |path| Jekyll.sanitized_path(@site.source, path) }
-        end
+          if safe?
+            paths.map! { |path| Jekyll.sanitized_path(@site.source, path) }
+          end
 
-        Dir.chdir(@site.source) do
-          paths = paths.flat_map { |path| Dir.glob(path) }
+          Dir.chdir(@site.source) do
+            paths = paths.flat_map { |path| Dir.glob(path) }
 
-          paths.map! do |path|
-            if safe?
-              Jekyll.sanitized_path(site_source, path)
-            else
-              File.expand_path(path)
+            paths.map! do |path|
+              if safe?
+                Jekyll.sanitized_path(site_source, path)
+              else
+                File.expand_path(path)
+              end
             end
           end
-        end
 
-        paths.uniq!
-        paths << @site.theme.javascript_path if @site.theme&.javascript_path
-        paths.select { |path| File.directory?(path) }
+          paths.uniq!
+          paths << @site.theme.javascript_path if @site.theme&.javascript_path
+          paths.select { |path| File.directory?(path) }
+        end
       end
 
       def convert(content)
-        @page.data['layout'] = 'none'
-
         config = Jekyll::Utils.symbolize_hash_keys(
           Jekyll::Utils.deep_merge_hashes(
             { :uglifer => {} },
