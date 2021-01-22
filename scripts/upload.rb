@@ -22,7 +22,9 @@ for image in images do
     context: {
       alt: alt,
       artist: artist,
-      caption: caption
+      caption: caption,
+      category: category,
+      year: year
     }
   })
 end
