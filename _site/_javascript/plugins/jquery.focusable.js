@@ -27,7 +27,7 @@ jQuery.extend(jQuery.expr.pseudos, {
       mapName = map.name;
 
       if (el.href && mapName && map.nodeName.toLowerCase() === 'map') {
-        returnValue = $("img[usemap='#" + mapName + "']")[0];
+        returnValue = $("img[usemap='#" + mapName + "']").length > 0;
       }
     } else if (/^(button|input|object|select|textarea)$/.test(nodeName)) {
       returnValue = !el.disabled;
