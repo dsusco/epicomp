@@ -8,7 +8,7 @@ template_image:
   public_id: <%= image.public_id %>
   secure_url: <%= image.secure_url.replace(/(\/upload\/)/, '$1' + transformation + '/') %>
 ---
-<div>{% assign years = site.data.years | sort | reverse %}{% for year in years %}
+<div>{% for year in site.data.years %}
   <a class="linked-figure" href="{{ 'gallery/' | append: year | append: '/' | relative_url }}" data-img-template="#gallery_img_template" data-year="{{ year }}">{% assign image = site.data.images | where_exp: 'image', 'image.tags contains year' | sample %}
     <figure>{% capture alt %}EpiComp {{ year }} (Pictured: {{ image.context.custom.alt }}){% endcapture %}
       {% include img.html image=image alt=alt transformation='c_fill,h_240,w_240' %}

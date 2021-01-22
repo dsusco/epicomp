@@ -29,8 +29,14 @@ module Jekyll
       # reduce the images array to an array of their tags, and keep the years
       site.data['years'] =
         site.data['images']
-          .reduce([]) { |years, image| years | image['tags'] }
-          .filter { |tag| tag.scan(/\D/).empty? }
+          .reduce({}) { |years, image|
+            year = image.dig('context', 'custom', 'year')
+
+            years[year] = nil unless year.nil?
+
+            years
+          }
+          .keys.sort { |a, b| b <=> a }
     end
   end
 end
