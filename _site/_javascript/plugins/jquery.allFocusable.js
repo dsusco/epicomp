@@ -1,15 +1,14 @@
 jQuery.extend(jQuery.expr.pseudos, {
   'all-focusable': function (el) {
     var
-      $el = $(el),
-      hasTabindex = $el.attr('tabindex') !== undefined && +$el.attr('tabindex') > -1,
+      hasTabindex = el.tabIndex !== undefined && +el.tabIndex > -1,
       map,
       mapName,
       nodeName = el.nodeName.toLowerCase(),
       returnValue = false;
 
     if ('a' === nodeName ) {
-      returnValue = el.href || hasTabindex;
+      returnValue = el.href !== undefined || hasTabindex;
     } else if ('area' === nodeName) {
       map = el.parentNode;
       mapName = map.name;

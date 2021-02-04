@@ -3,13 +3,13 @@ jQuery.extend(jQuery.expr.pseudos, {
     var
       $el = $(el),
       fieldset,
-      hasTabindex = $el.attr('tabindex') !== undefined && +$el.attr('tabindex') > -1,
+      hasTabindex = el.tabIndex !== undefined && +el.tabIndex > -1,
       map,
       mapName,
       nodeName = el.nodeName.toLowerCase(),
       returnValue = false;
 
-    function visible ($el) {
+    function parentsVisible ($el) {
       var visibility = $el.css('visibility');
 
       while (visibility === 'inherit') {
@@ -17,11 +17,12 @@ jQuery.extend(jQuery.expr.pseudos, {
 
         visibility = $el.css('visibility');
       }
+
       return visibility !== 'hidden';
     }
 
     if ('a' === nodeName ) {
-      returnValue = el.href || hasTabindex;
+      returnValue = el.href !== undefined  || hasTabindex;
     } else if ('area' === nodeName) {
       map = el.parentNode;
       mapName = map.name;
@@ -43,6 +44,6 @@ jQuery.extend(jQuery.expr.pseudos, {
       returnValue = hasTabindex;
     }
 
-    return returnValue && $el.is(':visible') && visible($el);
+    return returnValue && $el.is(':visible') && parentsVisible($el);
 	}
 });

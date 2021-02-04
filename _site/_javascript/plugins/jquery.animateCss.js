@@ -5,7 +5,7 @@ jQuery.fn.extend({
     if (!_.some(animationClass.split(' '), function (c) {
       return window.animateCssClasses.indexOf(c) >= 0;
     })) {
-      return this; // if there's no animation class in the class string, return
+      return this; // if there's no animation class in the string, return
     }
 
     if (animationClass.indexOf('animate__animated') < 0) {

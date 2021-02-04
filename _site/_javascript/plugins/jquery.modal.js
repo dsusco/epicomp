@@ -2,7 +2,7 @@ jQuery.fn.extend({
   modal: function (modalOptions) {
     return this.each(function () {
       var
-        $modal = $(this).attr('aria-modal', true),
+        $modal = $(this),
         options = $.extend({
           parent: 'body > div:first-of-type'
         }, $modal.data(), modalOptions),
@@ -55,16 +55,13 @@ jQuery.fn.extend({
         // allow focus again on non-modal elements
         $('[data-tabindex]')
           .each(function () {
-            var $el = $(this);
-
-            $el
-              .attr('tabindex', eval($el.attr('data-tabindex')))
-              .attr('data-tabindex', null);
+            this.setAttribute('tabindex', eval(this.getAttribute('data-tabindex')));
+            this.setAttribute('data-tabindex', null);
           });
 
         $parent.removeClass('modal-overlay');
 
-        $($modal.data('last-focus')).focus();
+        $modal.data('last-focus').focus();
 
         $control.removeClass('modal-closing');
 
@@ -90,11 +87,8 @@ jQuery.fn.extend({
             .not($(':all-focusable', $modal))
             .not('[tabindex^=-]')
             .each(function () {
-              var $el = $(this);
-
-              $el
-                .attr('data-tabindex', $el.attr('tabindex') || 'null')
-                .attr('tabindex', '-1');
+              this.setAttribute('data-tabindex', this.getAttribute('tabindex'));
+              this.setAttribute('tabindex', -1);
             });
 
           $modal.prop('hidden', false);
@@ -129,6 +123,7 @@ jQuery.fn.extend({
       }
 
       $modal
+        .attr('aria-modal', true)
         .addClass('modal') // for styles
         .appendTo($parent); // move to the end of parent
 
