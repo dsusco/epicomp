@@ -20,65 +20,85 @@ $(function () {
     delete images.sample;
   });
 
-  // gallery and year image card
-  $('a[data-img-template]').each(function () {
+  // nav disclosure
+  $('#nav > ul')
+    .disclosure({
+      control: '#nav > button'
+    });
+
+  // slideshow
+  $('[data-slideshow-template]').each(function () {
     var
-      $a = $(this),
+      slideshow = this,
+      $slideshow = $(slideshow),
       options = Object.assign({
-        delay: Math.floor(Math.random() * 6) * 1000 + 5000, // replace every 5 to 10 seconds
+        delay: Math.floor(Math.random() * 5) * 1000 + 4000, // replace every 4 to 8 seconds
         entranceAnimation: 'animate__delay-1s animate__slow animate__fadeIn',
-        entranceCss: { opacity: '' },
         exitAnimation: 'animate__delay-1s animate__slow animate__fadeOut',
-        exitCss: { opacity: 0 },
-        exitTimeout: 2500, // slightly longer that animate__slow
-        imgTemplate: ''
-      }, $a.data()),
-      imgTemplate = _.template($(options.imgTemplate).text().trim()),
-      tags = _.compact([this.getAttribute('data-year'), this.getAttribute('data-category')]),
-      transformation = $a.find('img').data('transformation');
+        exitTimeout: 2700, // slightly longer that animate__slow
+        tags: 'year, category',
+        target: '> :first-child',
+        transformation: null
+      }, $slideshow.data()),
+      template = _.template($(options.slideshowTemplate).text().trim()),
+      tags = options.tags.split(',').reduce(function (tags, tag) {
+        tag = slideshow.getAttribute('data-' + tag.trim());
+
+        if (tag !== null) {
+          tags.push(tag);
+        }
+
+        return tags;
+      }, []);
+
+    if (options.transformation === null) {
+      options.transformation = $slideshow.find('[data-transformation]').data('transformation');
+    }
 
     setInterval(function () {
       var
-        $exitingImg = $a.find('img'),
+        $exitingSlide = $(options.target, $slideshow),
         image = _.sample(_.filter(Object.values(images), function (image) { // choose a different random image from the same year/category
-          return $exitingImg.data('public_id') !== image.public_id && _.difference(tags, image.tags).length === 0 ;
+          return $exitingSlide.find('[data-public_id]').data('public_id') !== image.public_id && _.difference(tags, image.tags).length === 0 ;
         })),
-        $img = $(imgTemplate(Object.assign({ transformation: transformation }, options, { image: image })));
+        $enteringSlide = $(template(Object.assign({ image: image }, options)));
 
-      if (!$a.is(':focus') && !$a.is(':hover')) {
-        $exitingImg
+      if (!$exitingSlide.is(':focus') && !$exitingSlide.is(':hover')) {
+        $exitingSlide
+          .attr('tabindex', -1)
           .animateCss(options.exitAnimation)
           .after(
-            $img
-              .css(options.exitCss)
+            $enteringSlide
               .animateCss(options.entranceAnimation)
               .each(function () {
                 // animationend event buggy when window was minimized, using this instead
                 setTimeout(function () {
-                  $img
-                    .css(options.entranceCss)
-                    .prevUntil()
+                  $enteringSlide
+                    .prevUntil($exitingSlide)
+                    .add($exitingSlide)
                       .remove();
                 }, options.exitTimeout);
               })
+
           );
-        }
+      }
     }, options.delay);
   });
 
   // category modal
   $modal
     .modal({
-      control: '.category-linked-figure',
+      control: '#category_gallery > a',
       closingAnimation: 'animate__fadeOut',
       openingAnimation: 'animate__fadeIn'
     })
     .on('modal:opening', function (event, openEvent) {
       var
         $a = $(openEvent.delegateTarget),
+        $enteringBody = $(modalBodyTemplate({ image: images[$a.find('img').data('public_id')] })),
+        $exitingBody = $modal.find('.modal-body'),
         $prev = $a.prev(),
-        $next = $a.next(),
-        $modalBody = $(modalBodyTemplate({ image: images[$a.find('img').data('public_id')] }));
+        $next = $a.next();
 
       if ($prev.length < 1) {
         $prev = $a.siblings().last();
@@ -88,39 +108,32 @@ $(function () {
         $next = $a.siblings().first();
       }
 
-      $modal.find('.modal-body')
-        .each(function () {
-          if (openEvent.previous) {
-            $(this).animateCss('animate__fadeOutRight');
-          } else if (openEvent.next) {
-            $(this).animateCss('animate__fadeOutLeft');
-          }
+      $enteringBody
+        .one('click', '.previous', function () {
+          $modal.data('last-focus', $prev[0]);
+          $modal.trigger('modal:opening', { delegateTarget: $prev[0], enteringBody: true });
         })
-        .after(
-          $modalBody
-            .one('click', '.previous', function () {
-              $modal.data('last-focus', $prev[0]);
-              $modal.trigger('modal:opening', { delegateTarget: $prev[0], previous: true });
-            })
-            .one('click', '.next', function () {
-              $modal.data('last-focus', $next[0]);
-              $modal.trigger('modal:opening', { delegateTarget: $next[0],  next: true });
-            })
-            .each(function () {
-              if (openEvent.previous || openEvent.next) {
-                if (openEvent.previous) {
-                  $modalBody.animateCss('animate__fadeInLeft');
-                } else {
-                  $modalBody.animateCss('animate__fadeInRight');
-                }
+        .one('click', '.next', function () {
+          $modal.data('last-focus', $next[0]);
+          $modal.trigger('modal:opening', { delegateTarget: $next[0], enteringBody: true });
+        })
+        .animateCss('animate__fadeIn');
 
-                setTimeout(function () {
-                  $modalBody
-                    .prevUntil('.modal-header')
-                      .remove();
-                }, 1000); // change timeout to match animateCSS animate__* speed
-              }
-            })
-        );
+      $exitingBody
+        .after($enteringBody)
+        .each(function () {
+          if (openEvent.enteringBody) {
+            $exitingBody
+              .animateCss('animate__fadeOut')
+              .one('animationend', function () {
+                $enteringBody
+                  .prevUntil($exitingBody)
+                  .add($exitingBody)
+                    .remove();
+              });
+          } else {
+            $exitingBody.remove();
+          }
+        });
     });
 });

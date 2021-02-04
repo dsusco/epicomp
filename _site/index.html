@@ -4,15 +4,25 @@ template_image:
   context:
     custom:
       alt: <%= image.context.custom.alt %>
+      category: <%= image.context.custom.category %>
+      year: <%= image.context.custom.year %>
   public_id: <%= image.public_id %>
   secure_url: <%= image.secure_url.replace(/(\/upload\/)/, '$1' + transformation + '/') %>
 ---
-{% assign image = site.data.images | sample %}<a href="" data-delay="8000" data-img-template="#home_img_template">
-  <figure>
-    {% include img.html image=image transformation='c_fill,h_450,w_800' %}
-  </figure>
-</a>
+<div id="slideshow" data-delay="5000" data-slideshow-template="#slideshow_template">{% assign image = site.data.images | sample %}
+  <a href="{{ 'gallery/' | append: image.public_id | remove: image.context.custom.alt | relative_url }}">
+    <figure>
+      {% include img.html image=image transformation='c_fill,h_608,w_1080' %}
+      <figcaption>{{ image.context.custom.alt }}</figcaption>
+    </figure>
+  </a>
+</div>
 
-<script id="home_img_template" type="text/template">
-  {% include img.html image=page.template_image %}
+<script id="slideshow_template" type="text/template">
+  <a href="{{ 'gallery/' | relative_url | append: page.template_image.context.custom.year | append: '/' | append: page.template_image.context.custom.category | append: '/' }}">
+    <figure>
+      {% include img.html image=page.template_image %}
+      <figcaption>{{ page.template_image.context.custom.alt }}</figcaption>
+    </figure>
+  </a>
 </script>

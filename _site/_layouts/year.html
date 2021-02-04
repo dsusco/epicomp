@@ -1,15 +1,15 @@
 ---
 layout: default
 ---
-<div>{% for category in page.categories %}{% assign images = site.data.images | where_exp: 'image', 'image.tags contains page.year and image.tags contains category' %}
-  <a class="linked-figure" href="{{ 'gallery/' | append: page.year | append: '/' | append: category | append: '/' | relative_url }}" data-img-template="#year_img_template" data-year="{{ page.year }}" data-category="{{ category }}" data-category_title="{{ site.data.categories[category].title }}">{% assign image = images | sample %}
+<div id="year_gallery">{% for category in page.categories %}{% assign images = site.data.images | where_exp: 'image', 'image.tags contains page.year and image.tags contains category' %}
+  <a href="{{ 'gallery/' | append: page.year | append: '/' | append: category | append: '/' | relative_url }}" data-slideshow-template="#slideshow_template" data-target="img" data-year="{{ page.year }}" data-category="{{ category }}" data-category_title="{{ site.data.categories[category].title }}">{% assign image = images | sample %}
     <figure>{% capture alt %}EpiComp {{ page.year }} {{ site.data.categories[category].title }} (Pictured: {{ image.context.custom.alt }}){% endcapture %}
-      {% include img.html image=image alt=alt transformation='c_fill,h_240,w_240' %}
+      {% include img.html image=image alt=alt transformation='c_fill,h_320,w_320' %}
       <figcaption>EpiComp {{ page.year }} {{ site.data.categories[category].title }} <small>{{ images | size }} Entries</small></figcaption>
     </figure>
   </a>
 {% endfor %}</div>
 
-<script id="year_img_template" type="text/template">
+<script id="slideshow_template" type="text/template">
   {% include img.html image=page.template_image %}
 </script>

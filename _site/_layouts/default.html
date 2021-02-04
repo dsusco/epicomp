@@ -28,6 +28,8 @@
       </header>
 
       <nav id="nav">
+        <button id="nav_toggle" title="Toggle Navigation Menu" aria-label="Toggle Navigation Menu">☰</button>
+
         <ul>
           <li><a href="{{ 'about.html' | relative_url }}">About</a></li>
           <li><a href="{{ 'gallery/' | relative_url }}">Gallery</a></li>
@@ -35,12 +37,8 @@
         </ul>
       </nav>
 
-      <main id="main">
-        <h1>{{ page.heading | default: page.title }}</h1>{% if page.url != '/' %}
-
-        <ul>{% assign breadcrumbs = page.url | breadcrumb_array %}{% for breadcrumb in breadcrumbs %}
-          <li><a{% if forloop.last != true %} href="{{ breadcrumb.url | relative_url }}"{% endif %}>{{ breadcrumb.breadcrumb | default: breadcrumb.title }}</a></li>{% endfor %}
-        </ul>{% endif %}
+      <main id="main">{% if page.url != '/' %}
+        <h1 id="heading">{{ page.heading | default: page.title }}</h1>{% endif %}
 
 {{ content }}
       </main>

@@ -1,69 +1,179 @@
 ---
 ---
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+$_font_family_sans: 'Open Sans', sans-serif;
 @import 'baseline';
+@import '_layout';
 
-.modal-overlay {
-  position: fixed;
+#heading {
+}
 
-  &::after {
-    background: rgba(0, 0, 0, 0.5);
-    content: '';
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+#slideshow {
+  margin-top: $_ / 2;
+  position: relative;
+
+  a {
+    display: block;
+
+    + a {
+      @include position(absolute, 0 null null 0);
+    }
+  }
+
+  figcaption {
+    text-align: center;
   }
 }
 
-.modal {
-  background: white;
-  position: fixed;
-  top: 5%;
-  right: 5%;
-  bottom: 5%;
-  left: 5%;
-  z-index: 1;
-  overflow: hidden;
+#slideshow,
+#gallery,
+#year_gallery,
+#category_gallery {
+  a {
+    &:hover,
+    &:focus {
+      border-radius: 1px;
+      outline: none;
+      position: relative;
+      box-shadow: 0 0 0 2px lighten($_link_color, 12.5%);
+      z-index: 1;
+    }
+  }
 }
 
-.modal-body {
-  position: absolute;
-  padding: 10px;
-  height: calc(100% - 100px);
-  width: calc(100% - 20px);
+#gallery,
+#year_gallery {
+  a {
+    float: left;
+    width: 100%;
+  }
 
-  img {
-    display: block;
-    margin: 0 auto;
-    max-height: 100%;
+  img + img {
+    @include position(absolute, 0 null null 0);
+  }
+
+  @include media('>320px') {
+    a {
+      width: 50%;
+    }
+  }
+
+  @include media('>sm') {
+    a {
+      width: calc(100% / 3);
+    }
+  }
+
+  @include media('>md') {
+    a {
+      width: 25%;
+    }
+  }
+}
+
+#category_gallery {
+  display: flex;
+  flex-wrap: wrap;
+
+  a {
+    flex: 1 0 auto;
     max-width: 100%;
   }
-}
 
-a[data-img-template] {
-  display: inline-block;
-
-  figure {
-    width: 240px;
+  img {
+    height: 240px;
+    object-fit: cover;
+    width: 100%;
   }
 }
 
 figure {
-  height: 240px;
   position: relative;
-  margin: 0;
+}
 
-  img {
-    position: absolute;
+figcaption {
+  @include position(absolute, null 0 0);
+
+  background: linear-gradient(transparent 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.75) 100%);
+  color: #fff;
+  padding: 1rem ($_ / 2);
+  text-align: left;
+  text-shadow: 0 1px 1px #000;
+
+  small {
+    display: block;
+  }
+}
+
+.modal-overlay::after {
+  @include position(fixed, 0);
+
+  background: transparentize($_body_color, 0.5);
+  content: '';
+  z-index: 1;
+}
+
+.modal {
+  @include position(fixed, 5% null null 50%);
+
+  max-width: 90vw;
+  transform: translateX(-50%);
+  z-index: 10;
+
+  .modal-body + .modal-body {
+    @include position(absolute, 0 null null 50%);
+    transform: translateX(-50%);
+  }
+
+  button {
+    background: none;
+    border: none;
+    color: $_body_background_color;
+    text-shadow: 0 1px 1px #000;
+    font-size: $_font_size_h1;
+    padding: 0;
+    z-index: 1;
+  }
+
+  .close {
+    @include position(absolute, 0 0 null null);
+
+    font-size: $_font_size_h3;
+    height: 2 * $_;
+    width: 2 * $_;
   }
 
   figcaption {
-    position: absolute;
-    bottom: 0;
+    text-align: center;
+  }
 
-    small {
-      display: block;
+  img {
+    max-height: 90vh;
+    max-width: 90vw;
+  }
+
+  .previous,
+  .next {
+    @include position(absolute, 25% null);
+
+    width: 1.5em;
+  }
+
+  .previous {
+    left: 0;
+
+    &:focus,
+    &:hover {
+      background: radial-gradient(farthest-side at 0 50%, rgba(0, 0, 0, 0.75) 0%, transparent 100%);
+    }
+  }
+
+  .next {
+    right: 0;
+
+    &:focus,
+    &:hover {
+      background: radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.75) 0%, transparent 100%);
     }
   }
 }

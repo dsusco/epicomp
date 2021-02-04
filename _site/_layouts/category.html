@@ -1,35 +1,31 @@
 ---
 layout: default
 ---
-<div>{% assign images = site.data.images | where_exp: 'image', 'image.tags contains page.year and image.tags contains page.category' | sort: 'public_id' %}{% for image in images %}
-  <a class="category-linked-figure" href="{{ image.secure_url }}">
+<div id="category_gallery">{% assign images = site.data.images | where_exp: 'image', 'image.tags contains page.year and image.tags contains page.category' | sort: 'public_id' %}{% for image in images %}
+  <a href="{{ image.secure_url }}">
     <figure>
-      {% include img.html image=image transformation='h_240' %}
+      {% include img.html image=image transformation='h_324' %}
       <figcaption>{{ image.context.custom.alt }}</figcaption>
     </figure>
   </a>
 {% endfor %}</div>
 
 <div id="modal" hidden data-modal_body_template="#modal_body_template">
-  <header class="modal-header">
-    <button class="close"><span class="sr-only">Close</span></button>
-  </header>
-
   <div class="modal-body"></div>
 </div>
 
 <script id="modal_body_template" type="text/template">
   <div class="modal-body">
+    <button class="close" title="Close" aria-label="Close">×</button>
+
     <a href="<%= image.secure_url %>" target="_blank">
       <figure>
-        <img alt="<%= image.context.custom.alt %>" src="<%= image.secure_url.replace(/(\/upload\/)/, '$1w_640/') %>" title="<%= image.context.custom.alt %>" />
+        <img alt="<%= image.context.custom.alt %>" src="<%= image.secure_url.replace(/(\/upload\/)/, '$1w_1080/') %>" title="<%= image.context.custom.alt %>" />
         <figcaption><%= image.context.custom.alt %></figcaption>
       </figure>
     </a>
 
-    <div class="pager">
-      <button class="previous">Previous</button>
-      <button class="next">Next</button>
-    </div>
+    <button class="previous" title="Previous Image" aria-label="Previous Image">&lsaquo;</button>
+    <button class="next" title="Next Image" aria-label="Next Image">&rsaquo;</button>
   </div>
 </script>
