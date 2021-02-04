@@ -1,0 +1,147 @@
+// Reboot
+//
+// Normalization of HTML elements, manually forked from Bootstrap v4.6.0 _reboot.css
+//
+// Bootstrap is licensed MIT. https://github.com/twbs/bootstrap/
+
+// Document
+*,
+*::before,
+*::after {
+  box-sizing: border-box; // Change from `box-sizing: content-box` so that `width` is not affected by `padding` or `border`.
+}
+
+html {
+  font-family: sans-serif; // Change the default font family in all browsers.
+  font-size: x-small;
+  -webkit-tap-highlight-color: rgba(#000, 0); // Change the default tap highlight to be completely transparent in iOS.
+}
+
+article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, section {
+  display: block; // shim for older browsers
+}
+
+// Body
+body {
+  background-color: $_body_background_color; // As a best practice, apply a default `background-color`.
+  color: $_body_color;
+  font-family: $_font_family_sans;
+  font-size: $_font_size;
+  font-style: normal;
+  font-weight: normal;
+  line-height: $_line_height;
+  text-align: left; // Set an explicit initial text-align value so that we can later use the `inherit` value on things like `<th>` elements.
+}
+
+// https://developer.paciellogroup.com/blog/2018/03/focus-visible-and-backwards-compatibility/
+[tabindex="-1"]:focus:not(:focus-visible) {
+  outline: 0 !important;
+}
+
+abbr[title] {
+  cursor: help; // Add explicit cursor to indicate changed behavior.
+  text-decoration-skip-ink: none; // Prevent the text-decoration to be skipped.
+}
+
+address {
+  font-style: normal;
+  line-height: inherit;
+}
+
+dt {
+  font-weight: bold;
+}
+
+// Code
+pre {
+  overflow: auto; // Don't allow content to break outside
+  -ms-overflow-style: scrollbar; // Disable auto-hiding scrollbar in IE & legacy Edge to avoid overlap, making it impossible to interact with the content
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: $_font_family_mono;
+}
+
+// Images
+img, svg {
+  vertical-align: middle;
+}
+
+svg {
+  overflow: hidden; // Workaround for the SVG overflow bug in IE10/11 is still required.
+}
+
+// Tables
+table {
+  border-collapse: collapse; // Prevent double borders
+}
+
+caption {
+  caption-side: bottom;
+  text-align: left;
+}
+
+th {
+  font-weight: inherit; // Removes font-weight bold by inheriting
+  text-align: inherit; // Matches default `<td>` alignment by inheriting `text-align`.
+  text-align: -webkit-match-parent; // Fix alignment for Safari
+}
+
+// Forms
+label {
+  display: inline-block; // Allow labels to use `margin` for spacing.
+}
+
+button {
+  border-radius: 0; // Remove the default `border-radius` that macOS Chrome adds.
+
+
+  &:focus:not(:focus-visible) {
+    outline: 0; // https://developer.paciellogroup.com/blog/2018/03/focus-visible-and-backwards-compatibility/
+  }
+}
+
+[role="button"] {
+  cursor: pointer; // Set the cursor for non-`<button>` buttons
+}
+
+select {
+  word-wrap: normal; // Remove the inheritance of word-wrap in Safari.
+}
+
+textarea {
+  resize: vertical; // Textareas should really only resize vertically so they don't break their (horizontal) containers.
+}
+
+fieldset {
+  border: 0;
+  margin: 0;
+  min-width: 0; // Reset to ensure fieldsets behave more like a standard block element.
+  padding: 0; // Reset the default outline behavior of fieldsets so they don't affect page layout.
+}
+
+legend {
+  display: block;
+  line-height: inherit;
+  width: 100%;
+}
+
+[type="search"] {
+  -webkit-appearance: none;
+}
+
+// Correct element displays
+output {
+  display: inline-block;
+}
+
+summary {
+  cursor: pointer;
+}
+
+[hidden] {
+  display: none !important; // Needed for proper display in IE 10-.
+}
