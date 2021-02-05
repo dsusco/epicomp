@@ -1,5 +1,7 @@
 #page {
+  box-sizing: content-box;
   margin: 0 auto;
+  padding: 0 1rem;
 
   @include media('>sm') {
     max-width: 72rem;
@@ -119,7 +121,6 @@
 #footer {
   @include _($_font_size_small);
 
-  clear: both;
   padding: ($_ / 2) 0;
   text-align: center;
 
