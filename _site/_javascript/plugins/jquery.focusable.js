@@ -22,7 +22,7 @@ jQuery.extend(jQuery.expr.pseudos, {
     }
 
     if ('a' === nodeName ) {
-      returnValue = el.href !== undefined  || hasTabindex;
+      returnValue = hasTabindex && el.href !== undefined && el.href !== '';
     } else if ('area' === nodeName) {
       map = el.parentNode;
       mapName = map.name;
