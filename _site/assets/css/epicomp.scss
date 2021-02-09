@@ -134,7 +134,7 @@ figcaption {
 
     &:hover,
     &:focus {
-      background: radial-gradient(closest-side circle, rgba(0, 0, 0, 0.75) 0%, transparent 100%);
+      background: radial-gradient(closest-side circle at 50% 51%, rgba(0, 0, 0, 0.75) 0%, transparent 100%);
       outline: none;
     }
   }
@@ -156,14 +156,14 @@ figcaption {
     max-width: 90vw;
   }
 
-  .previous,
+  .prev,
   .next {
     @include position(absolute, 25% null);
 
     width: 1.5em;
   }
 
-  .previous {
+  .prev {
     left: 0;
   }
 

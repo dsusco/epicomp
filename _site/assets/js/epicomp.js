@@ -20,11 +20,8 @@ $(function () {
     delete images.sample;
   });
 
-  // nav disclosure
-  $('#nav > ul')
-    .disclosure({
-      control: '#nav > button'
-    });
+  // menus
+  $('#nav > ul, #year_menu, #category_menu').menu();
 
   // slideshow
   $('[data-slideshow-template]').each(function () {
@@ -109,20 +106,31 @@ $(function () {
       }
 
       $enteringBody
-        .one('click', '.previous', function () {
-          $modal.data('last-focus', $prev[0]);
-          $modal.trigger('modal:opening', { delegateTarget: $prev[0], enteringBody: true });
+        .one('click', '.prev', function () {
+          $modal
+            .data('last-focus', $prev[0])
+            .trigger('modal:opening', { delegateTarget: $prev[0], prev: true });
         })
         .one('click', '.next', function () {
-          $modal.data('last-focus', $next[0]);
-          $modal.trigger('modal:opening', { delegateTarget: $next[0], enteringBody: true });
+          $modal
+            .data('last-focus', $next[0])
+            .trigger('modal:opening', { delegateTarget: $next[0], next: true });
+        })
+        .one('keydown', function (event) {
+          switch (event.key) {
+            case 'ArrowLeft':
+              $enteringBody.find('.prev').trigger('click');
+              break;
+            case 'ArrowRight':
+              $enteringBody.find('.next').trigger('click');
+          }
         })
         .animateCss('animate__fadeIn');
 
       $exitingBody
         .after($enteringBody)
         .each(function () {
-          if (openEvent.enteringBody) {
+          if (openEvent.prev || openEvent.next) {
             $exitingBody
               .animateCss('animate__fadeOut')
               .one('animationend', function () {
@@ -130,6 +138,8 @@ $(function () {
                   .prevUntil($exitingBody)
                   .add($exitingBody)
                     .remove();
+
+                $enteringBody.find(openEvent.prev ? '.prev' : '.next')[0].focus();
               });
           } else {
             $exitingBody.remove();

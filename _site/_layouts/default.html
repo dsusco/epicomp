@@ -28,17 +28,36 @@
       </header>
 
       <nav id="nav">
-        <button id="nav_toggle" title="Toggle Navigation Menu" aria-label="Toggle Navigation Menu">☰</button>
+        <button id="nav_toggle" title="Show/Hide Navigation Menu" aria-label="Show/Hide Navigation Menu">☰</button>
 
-        <ul>
+        <ul data-control="#nav_toggle">
           <li><a href="{{ 'about.html' | relative_url }}">About</a></li>
           <li><a href="{{ 'gallery/' | relative_url }}">Gallery</a></li>
           <li><a href="{{ 'rules.html' | relative_url }}">Rules</a></li>
         </ul>
-      </nav>
+      </nav>{% if page.layout == 'year' or page.layout == 'category' %}
 
-      <main id="main">{% if page.url != '/' %}
-        <h1 id="heading">{{ page.heading | default: page.title }}</h1>{% endif %}
+      <nav id="breadcrumbs" aria-label="Breadcrumbs">
+        <ol>
+          <li>
+            <button id="year_menu_toggle" aria-label="Show/Hide Year Navigation Menu">{{ page.year }}</button>
+
+            <ul id="year_menu" data-control="#year_menu_toggle" hidden>{% for year in site.data.years %}
+              <li><a {% if page.breadcrumb != year %}href="{{ 'gallery/' | append: year | append: '/' | relative_url }}"{% else %}aria-current="page"{% endif %}>{{ year }}</a></li>{% endfor %}
+            </ul>
+          </li>{% if page.layout == 'category' %}
+          <li>
+            <button id="category_menu_toggle" aria-label="Show/Hide Category Navigation Menu">{{ page.breadcrumb }}</button>
+
+            <ul id="category_menu" data-control="#category_menu_toggle" hidden>{% for category in site.data.pages.gallery[page.year]['index.html'].categories %}
+              <li><a {% if page.category != category %}href="{{ 'gallery/' | append: page.year | append: '/' | append: category | append: '/' | relative_url }}"{% else %} aria-current="page"{% endif %}>{{ site.data.categories[category].title }}</a></li>{% endfor %}
+            </ul>
+          </li>{% endif %}
+        </ol>
+      </nav>{% endif %}
+
+      <main id="main">
+        <h1 id="heading"{% if page.url == '/' %} class="sr-only"{% endif %}>{{ page.heading | default: page.title }}</h1>
 
 {{ content }}
       </main>
