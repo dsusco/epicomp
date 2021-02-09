@@ -86,48 +86,27 @@ jQuery.fn.extend({
           .trigger('disclosure:showed', event);
       }
 
-      function resetOnResize () {
-        $disclosure
-          .removeClass('hidden shown')
-          .prop('hidden', $disclosure.data('hidden'));
-        $control.attr('aria-expanded', $disclosure.is(':visible'));
-      }
-
-      if (!$disclosure.hasEventHandler('disclosure:hide.baseline', hide)) {
-        $disclosure.on('disclosure:hide.baseline', hide);
-      }
-      if (!$disclosure.hasEventHandler('disclosure:show.baseline', show)) {
-        $disclosure.on('disclosure:show.baseline', show);
-      }
-
       $disclosure
         .id('disclosure') // for aria-controls
-        .addClass('disclosure') // for media queries
-        .data('hidden', $disclosure.prop('hidden')); // for reset on resize
+        .addClass('disclosure')
+        .data('hidden', $disclosure.prop('hidden')) // for reset on resize
+        .on('disclosure:show.baseline', show)
+        .on('disclosure:hide.baseline', hide);
 
       $control
         .attr('aria-controls', (($control.attr('aria-controls') || '') + ' ' + $disclosure.attr('id')).trim())
         .attr('aria-expanded', $disclosure.is(':visible'))
-        .on('click', function (event) { // toggle on control click
+        .on('click', function (event) { // show/hide on click
           $disclosure.is(':visible') ? hide(event) : show(event);
+        });
 
-          // don't follow links
-          event.preventDefault();
-        })
-        .not('button, [type="button"], [type="image"], [type="reset"], [type="submit"]')
-          .each(function () { // add tabindex to un-tabindexy controls
-            if (this.getAttribute('tabindex') === null) {
-              this.setAttribute('tabindex', 0);
-            }
-          })
-          .on('keypress', function (event) { // toggle on Enter for those controls
-            if (event.key === 'Enter') {
-              $disclosure.is(':visible') ? hide(event) : show(event);
-            }
-          });
-
-      if (options.resetOnResize && !$(window).hasEventHandler('resize', resetOnResize)) {
-        $(window).on('resize', resetOnResize);
+      if (options.resetOnResize) { // reset on resize
+        $(window).on('resize', function () {
+          $disclosure
+            .removeClass('hidden shown')
+            .prop('hidden', $disclosure.data('hidden'));
+          $control.attr('aria-expanded', $disclosure.is(':visible'));
+        });
       }
     });
   }

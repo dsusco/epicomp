@@ -106,7 +106,7 @@ jQuery.fn.extend({
       }
 
       function finishOpening (event) {
-        $modal.find(':focusable').first().focus();
+        $modal.find(':focusable')[0].focus();
 
         $control.removeClass('modal-opening');
 
@@ -115,42 +115,26 @@ jQuery.fn.extend({
           .trigger('modal:opened', event);
       }
 
-      if (!$modal.hasEventHandler('modal:close.baseline', close)) {
-        $modal.on('modal:close.baseline', close);
-      }
-      if (!$modal.hasEventHandler('modal:open.baseline', open)) {
-        $modal.on('modal:open.baseline', open);
-      }
-
       $modal
+        .addClass('modal')
         .attr('aria-modal', true)
-        .addClass('modal') // for styles
-        .appendTo($parent); // move to the end of parent
+        .on('modal:open.baseline', open)
+        .on('modal:close.baseline', close)
+        .appendTo($parent) // move to the end of parent;
 
-      $control
-        .on('click', function (event) { // toggle on control click
-          $modal.is(':visible') ? close(event) : open(event);
+      $control.on('click', function (event) { // open/close on click
+        $modal.is(':visible') ? close(event) : open(event);
 
-          // don't follow links
-          event.preventDefault();
-        })
-        .not('button, [type="button"], [type="image"], [type="reset"], [type="submit"]')
-          .each(function () { // add tabindex to un-tabindexy controls
-            if (this.getAttribute('tabindex') === null) {
-              this.setAttribute('tabindex', 0);
-            }
-          })
-          .on('keypress', function (event) { // toggle on Enter for those controls
-            if (event.key === 'Enter') {
-              $modal.is(':visible') ? close(event) : open(event);
-            }
-          });
+        // don't follow links
+        event.preventDefault();
+      });
 
       $(document)
-        .on('click', function (event) { // close on .close or overlay click
+        .on('click', function (event) { // close on non-modal click
           var $target = $(event.target);
 
-          if (($target.closest('.close').length > 0 || $(event.target).is($parent)) && $modal.is(':visible')) {
+          // close on .close or overlay click
+          if ($modal.is(':visible') && ($target.closest('.close').length > 0 || $target.is($parent))) {
             close(event);
 
             // don't follow links
