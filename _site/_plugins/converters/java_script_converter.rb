@@ -55,7 +55,7 @@ module Jekyll
           end
 
           paths.uniq!
-          paths << @site.theme.javascript_path if @site.theme&.javascript_path
+          #paths << @site.theme.javascript_path if @site.theme&.javascript_path
           paths.select { |path| File.directory?(path) }
         end
       end

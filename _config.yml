@@ -29,9 +29,12 @@ timezone: America/New_York
 defaults:
   -
     values:
-      layout: default
+      layout: page
   -
     scope:
       path: assets
     values:
       layout: none
+
+# Theme
+theme: baseline

@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: page
 ---
 <div id="category_gallery">{% assign images = site.data.images | where_exp: 'image', 'image.tags contains page.year and image.tags contains page.category' | sort: 'public_id' %}{% for image in images %}
   <a href="{{ image.secure_url }}">

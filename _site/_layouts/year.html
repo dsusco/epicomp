@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: page
 ---
 <div id="year_gallery">{% for category in page.categories %}{% assign images = site.data.images | where_exp: 'image', 'image.tags contains page.year and image.tags contains category' %}
   <a href="{{ 'gallery/' | append: page.year | append: '/' | append: category | append: '/' | relative_url }}" data-slideshow-template="#slideshow_template" data-target="img" data-year="{{ page.year }}" data-category="{{ category }}" data-category_title="{{ site.data.categories[category].title }}">{% assign image = images | sample %}

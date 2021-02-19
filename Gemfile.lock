@@ -1,3 +1,9 @@
+PATH
+  remote: /home/dsusco/baseline
+  specs:
+    baseline (0.1.0)
+      jekyll (~> 4.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -85,6 +91,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  baseline!
   cloudinary (~> 1.18.1)
   jekyll (~> 4.2.0)
   uglifier (~> 4.2.0)
