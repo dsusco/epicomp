@@ -11,7 +11,6 @@ title: EpiComp
 source: _site
 destination: public_html
 sass:
-  sass_dir: _scss
   style: compressed
 
 # Serving
