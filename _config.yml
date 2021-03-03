@@ -13,9 +13,6 @@ destination: public_html
 sass:
   sass_dir: _scss
   style: compressed
-javascript:
-  load_paths:
-    - node_modules
 
 # Serving
 baseurl: /epicomp
