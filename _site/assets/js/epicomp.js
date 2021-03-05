@@ -55,10 +55,17 @@ $(function () {
     setInterval(function () {
       var
         $exitingSlide = $(options.target, $slideshow),
-        image = _.sample(_.filter(Object.values(images), function (image) { // choose a different random image from the same year/category
-          return $exitingSlide.find('[data-public_id]').data('public_id') !== image.public_id && _.difference(tags, image.tags).length === 0 ;
+        exitingPublicId = $exitingSlide.data('public_id') || $exitingSlide.find('[data-public_id]').data('public_id'),
+        image = _.sample(Object.values(images).filter(function (image) { // choose a different random image from the same year/category
+          return exitingPublicId !== image.public_id && tags.filter(function (tag) { return !image.tags.includes(tag) }).length === 0;
         })),
+        $enteringSlide;
+
+      try {
         $enteringSlide = $(template(Object.assign({ image: image }, options)));
+      } catch (error) { // different random image not found, just return
+        return;
+      }
 
       if (!$exitingSlide.is(':focus') && !$exitingSlide.is(':hover')) {
         $exitingSlide
