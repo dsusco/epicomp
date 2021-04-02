@@ -1,6 +1,9 @@
 scripts:
+  - https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js
+  - https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js
   - /epicomp/assets/js/epicomp.js
 stylesheets:
+  - https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css
   - /epicomp/assets/css/epicomp.css
 author: Tactical Command
 description: Entries through the years for Tactical Command's EpiComp, a 6mm sci-fi miniature painting competition.
