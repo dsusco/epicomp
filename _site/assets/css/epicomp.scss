@@ -168,3 +168,9 @@ figcaption {
     right: 0;
   }
 }
+
+textarea {
+  display: block;
+  margin-bottom: $_;
+  width: 100%;
+}

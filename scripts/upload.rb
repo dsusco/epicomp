@@ -4,12 +4,13 @@ require 'yaml'
 
 Cloudinary.config(YAML.load(File.read('_cloudinary.yml')))
 
-dir = nil#'../epicomp-old/_site/_images/'
+dir = './epicomp/'
 # YEAR/CATEGORY/CAPTION - ARTIST.jpg
 images = Dir["#{dir}**/*.jpg"]#[1, 1]
 
 for image in images do
   public_id = image.sub(dir, '')
+  puts public_id
   year, category, filename = *public_id.split('/')
   alt = filename.delete_suffix('.jpg').split(' - ')
   artist = alt.pop
