@@ -1,4 +1,4 @@
-#!/home/dsusco/.rvm/rubies/ruby-2.7.2/bin/ruby
+#!/usr/bin/env ruby
 require 'cloudinary'
 require 'yaml'
 
