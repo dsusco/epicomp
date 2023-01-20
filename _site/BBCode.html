@@ -1,7 +1,7 @@
 ---
 title: BBCode
 ---
-{% assign year = '2021' %}{% for category in site.data.pages.gallery[year]['index.html'].categories %}
+{% assign year = '2022' %}{% for category in site.data.pages.gallery[year]['index.html'].categories %}
 <div>{% assign images = site.data.images | where_exp: 'image', 'image.tags contains year and image.tags contains category' | sort: 'public_id' %}
   <h2>{{ site.data.categories[category].title }}</h2>
 
